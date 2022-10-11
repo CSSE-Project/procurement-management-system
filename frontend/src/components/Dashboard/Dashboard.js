@@ -15,6 +15,11 @@ import {
   WarningOutlined,
   TableOutlined,
   PercentageOutlined,
+  PhoneFilled,
+  MailOutlined,
+  FacebookFilled,
+  TwitterCircleFilled,
+  InstagramFilled,
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "./styles/Dashboard.css";
@@ -176,6 +181,7 @@ const Dashboard = ({ user = null }) => {
           position: "sticky",
           top: 0,
           left: 0,
+          backgroundColor: "#85adad",
         }}
       >
         {collapsed === false ? (
@@ -196,7 +202,7 @@ const Dashboard = ({ user = null }) => {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                ABC Company
+                ABC Constructions
               </p>
             </center>
           </div>
@@ -446,12 +452,21 @@ const Dashboard = ({ user = null }) => {
           </center>
         )}
       </Sider>
-      <Layout className="site-layout">
+      <Layout className="site-layout" style={{ backgroundColor: "white" }}>
         <Header
           className="site-layout-background"
-          style={{ padding: 0, textAlign: "center" }}
+          style={{
+            padding: 0,
+            textAlign: "center",
+            backgroundColor: "#85adad",
+            position: "sticky",
+            top: 0,
+          }}
         >
-          <h1 id="header" style={{ fontFamily: "serif", fontSize: "20px" }}>
+          <h1
+            id="header"
+            style={{ fontFamily: "serif", fontSize: "20px", color: "white" }}
+          >
             {queryL === "leave"
               ? "Leave Requests"
               : queryE === "employee"
@@ -514,8 +529,28 @@ const Dashboard = ({ user = null }) => {
             !queryPromo && <CarouselView />}
           {_getPermissionRoutes()}
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Copyright © {date.getFullYear()} ABC Company
+        <br />
+        <Footer
+          style={{
+            textAlign: "center",
+            backgroundColor: "#b3cccc",
+            position: "sticky",
+            top: 0,
+            bottom: 0,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <div>
+              <PhoneFilled /> 0776988789 <br />
+              <MailOutlined /> abcconstructions@gmail.com <br />
+            </div>
+            <div>
+              Follow Us <br />
+              <div style={{ fontSize: "20px" }}>
+                <FacebookFilled /> <TwitterCircleFilled /> <InstagramFilled />
+              </div>
+            </div>
+          </div>
         </Footer>
       </Layout>
     </Layout>

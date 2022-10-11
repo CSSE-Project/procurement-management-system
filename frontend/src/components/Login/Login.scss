@@ -93,3 +93,19 @@
 .site-layout .site-layout-background {
   background: #fff;
 }
+
+.btn-wrap {
+  text-align: center;
+  .submit-btn {
+    background-color: #85adad;
+    border-radius: 8px;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    height: 45px;
+    padding: 12px 61px;
+    text-transform: uppercase;
+  }
+}
