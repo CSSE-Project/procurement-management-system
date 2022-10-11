@@ -86,6 +86,7 @@ export default () => {
         title="Password Request Form"
         onCancel={handleCancel}
         footer={false}
+        destroyOnClose={true}
       >
         <center>
           {error && <span style={{ color: "red" }}>{error}</span>}

@@ -53,7 +53,7 @@ exports.register = async (req, res) => {
   } catch (error) {
     if (error.code === 11000) {
       const message = "Already have an account using this email ";
-      return res.status(400).json({ success: false, error: message });
+      return res.status(400).json({ success: false, error: [message] });
     }
 
     if (error.name === "ValidationError") {

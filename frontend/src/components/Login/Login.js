@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Input, Button, Layout, Divider, Checkbox } from "antd";
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Layout,
+  Divider,
+  Checkbox,
+  Modal,
+} from "antd";
 import "./Login.scss";
 import Logo from "../Dashboard/assets/logo.png";
 import LoginLogo from "./assets/login.png";
@@ -8,14 +18,24 @@ import PasswordResetRequest from "../Dashboard/DashboardSubComponents/PasswordRe
 import jwtDecode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/authActions";
+import axios from "axios";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 
 const { Header } = Layout;
 
 const Login = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isError, setIsError] = useState(false);
+  const [visibleReg, setVisibleReg] = useState(false);
+  const [matchPassword, setMatchPassword] = useState(false);
+  const [regError, setRegError] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  const [form] = Form.useForm();
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -89,6 +109,56 @@ const Login = () => {
     }
   };
 
+  const onSubmit = async () => {
+    if (confirmPassword !== password) {
+      setMatchPassword(false);
+      setTimeout(() => {
+        setMatchPassword(true);
+        setInitialLoad(false);
+      }, [5000]);
+      return;
+    }
+    try {
+      await axios
+        .post("/api/auth/register", {
+          username,
+          email,
+          password,
+          type: "supplier",
+        })
+        .then(() => {
+          dispatch(loginUser({ email, password }));
+          setVisibleReg(false);
+        });
+    } catch (error) {
+      setRegError(error.response.data.error);
+      setTimeout(() => {
+        setRegError("");
+      }, [5000]);
+    }
+  };
+
+  const setTitle = () => (
+    <span>
+      REGISTER FORM{" "}
+      {initialLoad ? (
+        ""
+      ) : !matchPassword ? (
+        <span style={{ color: "red", fontSize: "12px" }}>
+          Password Missmatch
+        </span>
+      ) : (
+        ""
+      )}
+      {regError && (
+        <span style={{ color: "red", fontSize: "12px" }}>
+          {regError[0]} <br />
+          {regError[1]}
+        </span>
+      )}
+    </span>
+  );
+
   return (
     <>
       <Layout className="site-layout">
@@ -106,7 +176,7 @@ const Login = () => {
               id="header"
               style={{ fontFamily: "serif", fontSize: "50px", color: "white" }}
             >
-              ABC Company{" "}
+              ABC Constructions{" "}
             </h1>
 
             <Divider />
@@ -154,9 +224,30 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <Checkbox onClick={showPassword}>Show Password</Checkbox>
-                <br /> <br /> <br />
+                <div>
+                  <div
+                    onClick={() => {
+                      setVisibleReg(true);
+                      setEmail("");
+                      setPassword("");
+                      setRegError("");
+                      setMatchPassword(true);
+                    }}
+                    style={{
+                      cursor: "pointer",
+                      color: "#85adad",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Create an account
+                  </div>
+                </div>
+                <br /> <br />
                 {/* <a className="forget-text">Forgot password?</a> */}
-                <PasswordResetRequest />
+                <div>
+                  {" "}
+                  <PasswordResetRequest />
+                </div>
                 <div className="btn-wrap">
                   <center>
                     {isError && (
@@ -188,6 +279,65 @@ const Login = () => {
           </Col>
         </Row>
       </div>
+      <Modal
+        title={setTitle()}
+        visible={visibleReg}
+        onCancel={() => setVisibleReg(false)}
+        destroyOnClose={true}
+        footer={null}
+      >
+        <Form form={form} onFinish={onSubmit}>
+          <Form.Item name={"username"}>
+            Uername{" "}
+            <Input
+              type="text"
+              placeholder="Enter your username"
+              required
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item name={"email"}>
+            Email{" "}
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item name={"password"}>
+            Password{" "}
+            <Input.Password
+              type="password"
+              placeholder="Enter your password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              iconRender={(visible) =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+            />
+          </Form.Item>
+          <Form.Item name={"re-password"}>
+            Confirm Password{" "}
+            <Input.Password
+              type="password"
+              placeholder="Enter password"
+              required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              iconRender={(visible) =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+            />
+          </Form.Item>
+          <Form.Item>
+            <div className="btn-wrap">
+              <Button className="submit-btn" htmlType="submit" type={"primary"}>
+                SUBMIT
+              </Button>
+            </div>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };
