@@ -69,12 +69,12 @@ const ResetPassword = () => {
               style={{ padding: 0, textAlign: "center" }}
             >
               <center>
-                <img src={Logo} style={{ maxWidth: "100px" }} />
+                {/* <img src={Logo} style={{ maxWidth: "100px" }} /> */}
                 <h1
                   id="header"
                   style={{ fontFamily: "serif", fontSize: "50px" }}
                 >
-                  Ministry of Fisheries{" "}
+                  ABC Constructions{" "}
                 </h1>
 
                 <Divider />
@@ -92,7 +92,7 @@ const ResetPassword = () => {
           <br />
           <br />
           <center>
-            <h2>Leave Management System</h2>
+            <h2>Procument Management System</h2>
             <h3 style={{ color: "red" }}>Reset Password Application</h3>
           </center>
           <Form
