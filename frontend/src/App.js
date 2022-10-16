@@ -60,7 +60,7 @@ const App = () => {
               }
             />
             <Route
-              path="/procument-staff/:username"
+              path="/procument-staff-dashboard/:username"
               element={
                 <PrivateRoute>
                   <Dashboard user={decodedToken} />
