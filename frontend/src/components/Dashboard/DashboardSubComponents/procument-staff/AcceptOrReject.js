@@ -1,6 +1,7 @@
 import { Button, message, Modal, notification, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { GetColumnSearchProps } from "../common/Search";
 
 const AcceptOrReject = () => {
   const [data, setData] = useState([]);
@@ -17,6 +18,7 @@ const AcceptOrReject = () => {
     {
       title: "Name",
       dataIndex: "name",
+      ...GetColumnSearchProps("name"),
     },
     {
       title: "Unit",
