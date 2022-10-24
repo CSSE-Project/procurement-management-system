@@ -18,6 +18,9 @@ import CarouselView from "./DashboardSubComponents/CarouselView";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/authActions";
 import AcceptOrReject from "./DashboardSubComponents/procument-staff/AcceptOrReject";
+import Inventry from "./DashboardSubComponents/supplier/inventry";
+import Delivery from "./DashboardSubComponents/supplier/delivery";
+import Order from "./DashboardSubComponents/supplier/order";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -31,6 +34,10 @@ const Dashboard = ({ user = null }) => {
   const params = new URLSearchParams(search);
   //Procument Staff Queries
   const queryExamineOrder = params.get("_optL");
+  //Supplier Staff Queries
+  const queryInventry = params.get("_optI");
+  const queryDelevery = params.get("_optD");
+  const queryOrder = params.get("_optO");
   //------------------------------------------------------
   //Define Your Own Queries bellow
 
@@ -61,6 +68,15 @@ const Dashboard = ({ user = null }) => {
       case "leave":
         document.getElementById("header").innerHTML = "Examine Order";
         break;
+      case "inventry":
+        document.getElementById("header").innerHTML = "Store";
+        break;
+      case "order":
+        document.getElementById("header").innerHTML = "Order";
+        break;
+      case "delivery":
+        document.getElementById("header").innerHTML = "Delivery";
+        break;
       //use another case and implement your header here
       default:
         break;
@@ -90,7 +106,10 @@ const Dashboard = ({ user = null }) => {
         //there are two types of office. Please use username use correct implementation here
         //for any clarifications see mongoDB
         case "supplier":
-        //same as procument-staff
+          if (queryInventry === "true") return <Inventry />;
+          if (queryDelevery === "true") return <Delivery />;
+          if (queryOrder === "true") return <Order />;
+          else if (dashboard) return _displayWarning();
         default:
           return <></>;
       }
@@ -167,8 +186,12 @@ const Dashboard = ({ user = null }) => {
           theme="dark"
           mode="inline"
           selectedKeys={
-            queryExamineOrder === "true"
+            queryExamineOrder === "true" || queryInventry === "true"
               ? ["0"]
+              : queryDelevery === "true"
+              ? ["1"]
+              : queryOrder === "true"
+              ? ["2"]
               : //if you want more selected tabs use ternary and implement here
                 null
           }
@@ -198,7 +221,44 @@ const Dashboard = ({ user = null }) => {
               </Menu.Item>
             </>
           ) : (
-            <>{/* implement Supplier Tabs Here */}</>
+            <>
+              <Menu.Item
+                key="0"
+                icon={<SendOutlined />}
+                onClick={() => {
+                  setHeader("inventry");
+                  history(
+                    `/supplier-dashboard/${loggedUser?.username}?_optI=true`
+                  );
+                }}
+              >
+                Store
+              </Menu.Item>
+              <Menu.Item
+                key="1"
+                icon={<SendOutlined />}
+                onClick={() => {
+                  setHeader("delivery");
+                  history(
+                    `/supplier-dashboard/${loggedUser?.username}?_optD=true`
+                  );
+                }}
+              >
+                Deliver
+              </Menu.Item>
+              <Menu.Item
+                key="2"
+                icon={<SendOutlined />}
+                onClick={() => {
+                  setHeader("order");
+                  history(
+                    `/supplier-dashboard/${loggedUser?.username}?_optO=true`
+                  );
+                }}
+              >
+                Order
+              </Menu.Item>
+            </>
           )}
         </Menu>
         <br />
@@ -235,6 +295,12 @@ const Dashboard = ({ user = null }) => {
           >
             {queryExamineOrder === "true"
               ? "Examine Order"
+              : queryInventry === "true"
+              ? "Store"
+              : queryDelevery === "true"
+              ? "Delevery"
+              : queryOrder === "true"
+              ? "Order"
               : //add ternary and implement your own header
                 "Dashboard"}
           </h1>
@@ -244,10 +310,13 @@ const Dashboard = ({ user = null }) => {
             <Breadcrumb.Item>{greet}</Breadcrumb.Item>
             <Breadcrumb.Item>{loggedUser?.fullName}</Breadcrumb.Item>
           </Breadcrumb>
-          {!queryExamineOrder && (
-            //Please restrict your query param as above to avoid the Slide Show in other tabs you clicked
-            <CarouselView />
-          )}
+          {!queryExamineOrder &&
+            !queryInventry &&
+            !queryDelevery &&
+            !queryOrder && (
+              //Please restrict your query param as above to avoid the Slide Show in other tabs you clicked
+              <CarouselView />
+            )}
 
           {_getPermissionRoutes()}
         </Content>

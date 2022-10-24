@@ -48,3 +48,10 @@ exports.getAll = async (req, res) => {
     .then((orders) => res.status(200).json(orders))
     .catch((err) => res.status(500).json({ success: false, message: err }));
 };
+
+exports.deleteOrder = async (req, res) => {
+  const { id } = req.params;
+  await Order.findByIdAndDelete(id)
+    .then((order) => res.status(200).json({ message: "Deleted Successfully" }))
+    .catch((err) => res.status(500).json({ success: false, message: err }));
+};

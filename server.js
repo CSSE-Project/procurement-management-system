@@ -33,6 +33,7 @@ app.listen(PORT, () => {
 
 app.use("/api/auth", require("./BACKEND/routes/auth"));
 app.use("/order", require("./BACKEND/routes/order"));
+app.use("/inventry", require("./BACKEND/routes/inventry"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/build")));
