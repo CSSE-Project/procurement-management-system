@@ -1,23 +1,31 @@
-import { Button, Table } from "antd";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import React, { useState, useEffect } from "react";
-
-function onChange(pagination, filters, sorter, extra) {
-  console.log("params", pagination, filters, sorter, extra);
-}
+import React from "react";
+import {
+  Collapse,
+  Form,
+  notification,
+  Empty,
+  Spin,
+  Switch,
+  Input,
+  Button,
+} from "antd";
+import { useEffect } from "react";
+import { useState } from "react";
+const { Panel } = Collapse;
 
 const Delivery = () => {
-  const doc = new jsPDF("p", "pt", "a2");
   const [data, setData] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [toggle, setToggle] = useState(false);
+
+  const [form] = Form.useForm();
+  const search = window.location.search;
+
   useEffect(() => {
     (async () => {
       await fetch("/order")
         .then((res) => res.json())
         .then((json) => {
           setData(json);
-          setLoader(!loader);
         });
     })();
   }, []);
@@ -26,100 +34,83 @@ const Delivery = () => {
     (el) =>
       el?.status !== null && el?.supEmail === localStorage.getItem("email")
   );
-  console.log(filteredData);
 
-  const columns = [
-    {
-      title: "Item Name",
-      dataIndex: "name",
-      sorter: (a, b) => a.name - b.name,
-      sortDirections: ["descend"],
-    },
-    {
-      title: "Unit",
-      dataIndex: "unit",
-      sorter: (a, b) => a.Unit - b.Unit,
-    },
-    {
-      title: "Store Name",
-      dataIndex: "nameOfSupplier",
-      sorter: (a, b) => a.nameOfSupplier - b.nameOfSupplier,
-    },
-    {
-      title: "Contact Person",
-      dataIndex: "contactPerson",
-      sorter: (a, b) => a.contactPerson - b.contactPerson,
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      sorter: (a, b) => a.phoneNumber.length - b.phoneNumber.length,
-    },
-    {
-      title: "Quantity",
-      dataIndex: "quantity",
-      sorter: (a, b) => a.quantity.length - b.quantity.length,
-    },
-    {
-      title: "Unit Price",
-      dataIndex: "unitPrice",
-    },
-    {
-      title: "Budget",
-      dataIndex: "sBudget",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-    },
-  ];
+  const genExtra = (value) => (
+    <span className={toggle ? "paid" : "pending"}>
+      <a></a>
+    </span>
+  );
 
-  const print = () => {
-    autoTable(doc, {
-      head: [
-        [
-          "name",
-          "unit",
-          "nameOfSupplier",
-          "contactPerson",
-          "phoneNumber",
-          "quantity",
-          "unitPrice",
-          "sBudget",
-          "Status",
-        ],
-      ],
-      theme: "grid",
-      body: filteredData.map((val) => [
-        val?.name,
-        val?.unit,
-        val?.nameOfSupplier,
-        val?.contactPerson,
-        val?.phoneNumber,
-        val?.quantity,
-        val?.unitPrice,
-        val?.sBudget,
-        val?.status,
-      ]),
-    });
-
-    doc.save(`deliver_${new Date()}.pdf`);
-  };
+  const setHeader = (value) => (
+    <>
+      <span style={{ fontWeight: "bold" }}>{value?.fullName}</span> &nbsp;
+      <i style={{ color: "green" }}> {value?.email}</i>
+    </>
+  );
 
   return (
     <>
-      <Button style={{ float: "right" }} onClick={print}>
-        Generate Report
-      </Button>
-      <br /> <br />
-      <Table
-        columns={columns}
-        dataSource={filteredData}
-        onChange={onChange}
-        loading={loader}
-        showHeader
-        sticky
-      />
+      <br />
+      <br />
+      <Form form={form}>
+        <Collapse defaultActiveKey={["1"]}>
+          <Panel header={setHeader("abc")} forceRender={true}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>
+                <br />
+
+                <br />
+                <span
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: "bold",
+                    color: "red",
+                  }}
+                ></span>
+                <br />
+
+                <br />
+
+                <br />
+              </div>
+
+              <Form.Item
+                //name={[index, "amount"]}
+                rules={[
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!(parseInt(value).toString().length >= 16))
+                        return Promise.resolve();
+                      return Promise.reject(
+                        new Error("Maximum number limit exceeded.")
+                      );
+                    },
+                  }),
+                  {
+                    pattern: new RegExp(/^[0-9,.]{0,30}$/i),
+                    message: "Numbers only without spaces",
+                  },
+                ]}
+              >
+                Amount(Rs.) :
+                <Input
+                // placeholder={
+                //   !disablePermission(value) && "Enter amount"
+                // }
+                // disabled={disablePermission(value)}
+                // onChange={(e) => {
+                //   setFinalPayment(e.target.value, index, value);
+                //   form.validateFields([[index, "amount"]]);
+                // }}
+                // value={amount?.[index]}
+                // maxLength={30}
+                // showCount={!disablePermission(value)}
+                />
+              </Form.Item>
+            </div>
+          </Panel>
+        </Collapse>
+      </Form>
     </>
   );
 };
