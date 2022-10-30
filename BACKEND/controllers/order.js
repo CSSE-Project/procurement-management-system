@@ -43,6 +43,15 @@ exports.acceptOrReject = async (req, res) => {
     .catch((err) => res.status(500).json({ success: false, message: err }));
 };
 
+exports.allocatebudget = async (req, res) => {
+  const { mBudget = Number(mBudget) } = req.body;
+  const { id } = req.params;
+
+  await Order.findByIdAndUpdate(id, { mBudget })
+    .then(() => res.status(200).json({ success: true, message: "SUCCESS" }))
+    .catch((err) => res.status(500).json({ success: false, message: err }));
+};
+
 exports.getAll = async (req, res) => {
   await Order.find()
     .then((orders) => res.status(200).json(orders))

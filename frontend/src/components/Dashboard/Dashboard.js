@@ -18,6 +18,8 @@ import CarouselView from "./DashboardSubComponents/CarouselView";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/authActions";
 import AcceptOrReject from "./DashboardSubComponents/procument-staff/AcceptOrReject";
+import AllocateBudget from "./DashboardSubComponents/manager/AllocateBudget";
+import RulesAndRegulations from "./DashboardSubComponents/manager/RulesAndRegulations";
 import Inventry from "./DashboardSubComponents/supplier/inventry";
 import Delivery from "./DashboardSubComponents/supplier/delivery";
 import Order from "./DashboardSubComponents/supplier/order";
@@ -40,6 +42,8 @@ const Dashboard = ({ user = null }) => {
   const queryOrder = params.get("_optO");
   //------------------------------------------------------
   //Define Your Own Queries bellow
+  const queryAllocateBudget = params.get("_optB");
+  const queryRules = params.get("_optR");
 
   const { username } = useParams();
 
@@ -78,6 +82,12 @@ const Dashboard = ({ user = null }) => {
         document.getElementById("header").innerHTML = "Delivery";
         break;
       //use another case and implement your header here
+      case "budget":
+        document.getElementById("header").innerHTML = "Allocate Budget";
+        break;
+      case "rules":
+        document.getElementById("header").innerHTML = "Rules And Regulations";
+        break;
       default:
         break;
     }
@@ -102,6 +112,11 @@ const Dashboard = ({ user = null }) => {
           if (queryExamineOrder === "true") return <AcceptOrReject />;
           else if (dashboard) return _displayWarning();
         case "office":
+          if (loggedUser?.username === "manager") {
+            if (queryAllocateBudget === "true") return <AllocateBudget />;
+            if (queryRules === "true") return <RulesAndRegulations />;
+            else if (dashboard) return _displayWarning();
+          }
         //Site manager and Manager Components
         //there are two types of office. Please use username use correct implementation here
         //for any clarifications see mongoDB
@@ -186,9 +201,11 @@ const Dashboard = ({ user = null }) => {
           theme="dark"
           mode="inline"
           selectedKeys={
-            queryExamineOrder === "true" || queryInventry === "true"
+            queryExamineOrder === "true" ||
+            queryInventry === "true" ||
+            queryAllocateBudget === "true"
               ? ["0"]
-              : queryDelevery === "true"
+              : queryDelevery === "true" || queryRules === "true"
               ? ["1"]
               : queryOrder === "true"
               ? ["2"]
@@ -199,7 +216,32 @@ const Dashboard = ({ user = null }) => {
           {loggedUser?.type === "office" ? (
             <>
               {loggedUser?.username === "manager" && (
-                <>{/* implement Manager Tabs Here */}</>
+                <>
+                  <Menu.Item
+                    key="0"
+                    icon={<SendOutlined />}
+                    onClick={() => {
+                      setHeader("budget");
+                      history(
+                        `/office-dashboard/${loggedUser?.username}?_optB=true`
+                      );
+                    }}
+                  >
+                    Allocate Budget
+                  </Menu.Item>
+                  <Menu.Item
+                    key="1"
+                    icon={<SendOutlined />}
+                    onClick={() => {
+                      setHeader("rules");
+                      history(
+                        `/office-dashboard/${loggedUser?.username}?_optR=true`
+                      );
+                    }}
+                  >
+                    Rules And Regulations
+                  </Menu.Item>
+                </>
               )}
               {loggedUser?.username === "site-manager" && (
                 <>{/* implement Site-Manager Tabs Here */}</>
@@ -301,6 +343,10 @@ const Dashboard = ({ user = null }) => {
               ? "Delevery"
               : queryOrder === "true"
               ? "Order"
+              : queryAllocateBudget === "true"
+              ? "Allocate Budget"
+              : queryRules === "true"
+              ? "Rules And Regulations"
               : //add ternary and implement your own header
                 "Dashboard"}
           </h1>
@@ -313,7 +359,9 @@ const Dashboard = ({ user = null }) => {
           {!queryExamineOrder &&
             !queryInventry &&
             !queryDelevery &&
-            !queryOrder && (
+            !queryOrder &&
+            !queryRules &&
+            !queryAllocateBudget && (
               //Please restrict your query param as above to avoid the Slide Show in other tabs you clicked
               <CarouselView />
             )}
