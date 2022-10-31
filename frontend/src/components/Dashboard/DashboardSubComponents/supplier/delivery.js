@@ -74,9 +74,6 @@ const Delivery = () => {
             <Panel header={setHeader(val)} forceRender={true}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div>
-                  <br />
-
-                  <br />
                   <span
                     style={{
                       fontSize: "10px",
@@ -97,37 +94,38 @@ const Delivery = () => {
                   <div> Budget : {val.sBudget}</div>
                   <div> Status : {val.status}</div>
                 </div>
-
-                <Form.Item
-                  //name={[index, "amount"]}
-                  rules={[
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!(parseInt(value).toString().length >= 16))
-                          return Promise.resolve();
-                        return Promise.reject(
-                          new Error("Maximum number limit exceeded.")
-                        );
+                <div>
+                  <Form.Item
+                    //name={[index, "amount"]}
+                    rules={[
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!(parseInt(value).toString().length >= 16))
+                            return Promise.resolve();
+                          return Promise.reject(
+                            new Error("Maximum number limit exceeded.")
+                          );
+                        },
+                      }),
+                      {
+                        pattern: new RegExp(/^[0-9,.]{0,30}$/i),
+                        message: "Numbers only without spaces",
                       },
-                    }),
-                    {
-                      pattern: new RegExp(/^[0-9,.]{0,30}$/i),
-                      message: "Numbers only without spaces",
-                    },
-                  ]}
-                >
-                  Enter Delivery Date
-                  <DatePicker
-                    onChange={(e) => setDate(e)}
+                    ]}
+                  >
+                    Enter Delivery Date
+                    <DatePicker
+                      onChange={(e) => setDate(e)}
+                      disabled={val.status == "REJECTED" || val.date}
+                    />
+                  </Form.Item>
+                  <Button
+                    onClick={() => onSubmit(val._id)}
                     disabled={val.status == "REJECTED" || val.date}
-                  />
-                </Form.Item>
-                <Button
-                  onClick={() => onSubmit(val._id)}
-                  disabled={val.status == "REJECTED" || val.date}
-                >
-                  Submit
-                </Button>
+                  >
+                    Submit
+                  </Button>
+                </div>
               </div>
             </Panel>
           </Collapse>
