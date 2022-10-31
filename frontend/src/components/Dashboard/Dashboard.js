@@ -42,8 +42,12 @@ const Dashboard = ({ user = null }) => {
   const queryOrder = params.get("_optO");
   //------------------------------------------------------
   //Define Your Own Queries bellow
+  // Sitemanager Query
+  const queryDStaff = params.get("dStaff");
+
   const queryAllocateBudget = params.get("_optB");
   const queryRules = params.get("_optR");
+
 
   const { username } = useParams();
 
@@ -82,6 +86,11 @@ const Dashboard = ({ user = null }) => {
         document.getElementById("header").innerHTML = "Delivery";
         break;
       //use another case and implement your header here
+
+      case "dPerson":
+        document.getElementById("header").innerHTML = "AllSuplier";
+        break;
+
       case "budget":
         document.getElementById("header").innerHTML = "Allocate Budget";
         break;
@@ -112,12 +121,17 @@ const Dashboard = ({ user = null }) => {
           if (queryExamineOrder === "true") return <AcceptOrReject />;
           else if (dashboard) return _displayWarning();
         case "office":
+          if (loggedUser?.username === "site-manager") {
+            if (queryDStaff === "true") return <AcceptOrReject />;
+            else if (dashboard) return _displayWarning();
+          }
           if (loggedUser?.username === "manager") {
             if (queryAllocateBudget === "true") return <AllocateBudget />;
             if (queryRules === "true") return <RulesAndRegulations />;
             else if (dashboard) return _displayWarning();
           }
         //Site manager and Manager Components
+
         //there are two types of office. Please use username use correct implementation here
         //for any clarifications see mongoDB
         case "supplier":
@@ -203,6 +217,7 @@ const Dashboard = ({ user = null }) => {
           selectedKeys={
             queryExamineOrder === "true" ||
             queryInventry === "true" ||
+            queryDStaff === "true" ||
             queryAllocateBudget === "true"
               ? ["0"]
               : queryDelevery === "true" || queryRules === "true"
@@ -244,7 +259,21 @@ const Dashboard = ({ user = null }) => {
                 </>
               )}
               {loggedUser?.username === "site-manager" && (
-                <>{/* implement Site-Manager Tabs Here */}</>
+                <>
+                  {/* implement Site-Manager Tabs Here */}
+                  <Menu.Item
+                    key="0"
+                    icon={<SendOutlined />}
+                    onClick={() => {
+                      setHeader("leave");
+                      history(
+                        `/office-dashboard/${loggedUser?.username}?dStaff=true`
+                      );
+                    }}
+                  >
+                    All Supliers
+                  </Menu.Item>
+                </>
               )}
             </>
           ) : loggedUser?.type === "procument-staff" ? (
@@ -343,6 +372,8 @@ const Dashboard = ({ user = null }) => {
               ? "Delevery"
               : queryOrder === "true"
               ? "Order"
+              : queryDStaff === "true"
+              ? "All Supliers"
               : queryAllocateBudget === "true"
               ? "Allocate Budget"
               : queryRules === "true"
