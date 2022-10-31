@@ -23,6 +23,7 @@ import RulesAndRegulations from "./DashboardSubComponents/manager/RulesAndRegula
 import Inventry from "./DashboardSubComponents/supplier/inventry";
 import Delivery from "./DashboardSubComponents/supplier/delivery";
 import Order from "./DashboardSubComponents/supplier/order";
+import Suplier from "./DashboardSubComponents/SiteManager/suplier";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -47,7 +48,6 @@ const Dashboard = ({ user = null }) => {
 
   const queryAllocateBudget = params.get("_optB");
   const queryRules = params.get("_optR");
-
 
   const { username } = useParams();
 
@@ -122,7 +122,7 @@ const Dashboard = ({ user = null }) => {
           else if (dashboard) return _displayWarning();
         case "office":
           if (loggedUser?.username === "site-manager") {
-            if (queryDStaff === "true") return <AcceptOrReject />;
+            if (queryDStaff === "true") return <Suplier />;
             else if (dashboard) return _displayWarning();
           }
           if (loggedUser?.username === "manager") {
@@ -271,7 +271,7 @@ const Dashboard = ({ user = null }) => {
                       );
                     }}
                   >
-                    All Supliers
+                    All Suppliers
                   </Menu.Item>
                 </>
               )}
@@ -373,7 +373,7 @@ const Dashboard = ({ user = null }) => {
               : queryOrder === "true"
               ? "Order"
               : queryDStaff === "true"
-              ? "All Supliers"
+              ? "All Suppliers"
               : queryAllocateBudget === "true"
               ? "Allocate Budget"
               : queryRules === "true"
@@ -392,7 +392,8 @@ const Dashboard = ({ user = null }) => {
             !queryDelevery &&
             !queryOrder &&
             !queryRules &&
-            !queryAllocateBudget && (
+            !queryAllocateBudget &&
+            !queryDStaff && (
               //Please restrict your query param as above to avoid the Slide Show in other tabs you clicked
               <CarouselView />
             )}
