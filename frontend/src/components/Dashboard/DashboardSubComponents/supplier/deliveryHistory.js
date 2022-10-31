@@ -7,7 +7,7 @@ function onChange(pagination, filters, sorter, extra) {
   console.log("params", pagination, filters, sorter, extra);
 }
 
-const Delivery = () => {
+const DeliveryHistory = () => {
   const doc = new jsPDF("p", "pt", "a2");
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(true);
@@ -72,6 +72,10 @@ const Delivery = () => {
       title: "Status",
       dataIndex: "status",
     },
+    {
+      title: "Delivery Date",
+      dataIndex: "date",
+    },
   ];
 
   const print = () => {
@@ -87,6 +91,7 @@ const Delivery = () => {
           "unitPrice",
           "sBudget",
           "Status",
+          "date",
         ],
       ],
       theme: "grid",
@@ -100,6 +105,7 @@ const Delivery = () => {
         val?.unitPrice,
         val?.sBudget,
         val?.status,
+        val?.date,
       ]),
     });
 
@@ -124,4 +130,4 @@ const Delivery = () => {
   );
 };
 
-export default Delivery;
+export default DeliveryHistory;

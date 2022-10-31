@@ -64,3 +64,11 @@ exports.deleteOrder = async (req, res) => {
     .then((order) => res.status(200).json({ message: "Deleted Successfully" }))
     .catch((err) => res.status(500).json({ success: false, message: err }));
 };
+
+exports.updateOrder = async (req, res) => {
+  const { id } = req.params;
+  const date = req.body.date;
+  await Order.findByIdAndUpdate(id, { date })
+    .then((order) => res.status(200).json({ message: "Updated Successfully" }))
+    .catch((err) => res.status(500).json({ success: false, message: err }));
+};
