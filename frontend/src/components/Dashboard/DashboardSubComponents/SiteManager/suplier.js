@@ -12,9 +12,13 @@ const Suplier = () => {
 
   useEffect(() => {
     (async () =>
-      await fetch("/api/auth").then((res) => setData(res?.data)))();
+      await fetch("/api/auth")
+        .then((res) => res.json())
+        .then((json) => setData(json)))();
     (async () =>
-      await fetch("/order").then((res) => setPurchaseData(res?.data)))();
+      await fetch("/order")
+        .then((res) => res.json())
+        .then((json) => setPurchaseData(json)))();
   }, [success]);
 
   const columns = [

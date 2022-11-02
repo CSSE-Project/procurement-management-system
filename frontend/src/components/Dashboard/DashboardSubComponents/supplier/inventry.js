@@ -76,7 +76,10 @@ const Inventry = () => {
       setTimeout(() => {
         setLoader(!loader);
       }, 5000);
-    (async () => fetch("/inventry").then((res) => setData(res.data)))();
+    (async () =>
+      fetch("/inventry")
+        .then((res) => res.json())
+        .then((json) => setData(json)))();
   }, [success]);
 
   const inventryHandler = async (placement) => {

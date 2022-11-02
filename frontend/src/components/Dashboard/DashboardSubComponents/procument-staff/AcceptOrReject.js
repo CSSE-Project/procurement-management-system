@@ -147,7 +147,10 @@ const AcceptOrReject = () => {
   };
 
   useEffect(() => {
-    (async () => fetch("/order").then((res) => setData(res.data)))();
+    (async () =>
+      fetch("/order")
+        .then((res) => res.json())
+        .then((json) => setData(json)))();
   }, [success]);
   return (
     <div>

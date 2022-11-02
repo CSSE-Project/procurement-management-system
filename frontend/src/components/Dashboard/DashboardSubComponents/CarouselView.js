@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Carousel, Spin } from "antd";
-import CarouselImg1 from "../assets/1.jpg";
-import CarouselImg2 from "../assets/2.jpg";
-import CarouselImg3 from "../assets/3.jpg";
-import CarouselImg4 from "../assets/4.jpg";
 
 const contentStyle = {
   height: "470px",
@@ -27,16 +23,16 @@ const CarouselView = () => {
         {loader === false && <Spin />}
 
         <div>
-          <img src={CarouselImg1} style={contentStyle} />
+          <img src={"https://i.ibb.co/JCQTtpc/1.jpg"} style={contentStyle} />
         </div>
         <div>
-          <img src={CarouselImg2} style={contentStyle} />
+          <img src={"https://i.ibb.co/wp7CdFh/2.jpg"} style={contentStyle} />
         </div>
         <div>
-          <img src={CarouselImg3} style={contentStyle} />
+          <img src={"https://i.ibb.co/YWCP4pS/3.jpg"} style={contentStyle} />
         </div>
         <div>
-          <img src={CarouselImg4} style={contentStyle} />
+          <img src={"https://i.ibb.co/tmtwKVZ/4.jpg"} style={contentStyle} />
         </div>
       </Carousel>
     </>

@@ -29,9 +29,8 @@ export default () => {
 
   const location = useLocation();
   useEffect(() => {
-    fetch()
-  }, [])
-  
+    fetch();
+  }, []);
 
   const forgotPasswordHandler = async () => {
     //method for forgot password handling
