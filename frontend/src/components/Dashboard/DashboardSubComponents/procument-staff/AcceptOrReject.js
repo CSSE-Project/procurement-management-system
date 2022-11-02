@@ -141,6 +141,9 @@ const AcceptOrReject = () => {
       id,
       email: "tnirmalaadasooriya@gmail.com",
     });
+    setTimeout(() => {
+      setSuccess(false);
+    }, [100]);
   };
 
   useEffect(() => {

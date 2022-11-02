@@ -45,6 +45,19 @@ const Suplier = () => {
     },
   ];
 
+  const updateStatus = async (id) => {
+    await axios
+      .put(`/order/status/${id}`, { dStatus: "ACCEPTED" })
+      .then(() => {
+        notification.success({ message: "Accepeted!" });
+        setSuccess(true);
+      })
+      .catch(() => notification.error({ message: "Something went wrong!" }));
+    setTimeout(() => {
+      setSuccess(false);
+    }, [100]);
+  };
+
   const purchaseColumns = [
     {
       title: "Name",
@@ -72,6 +85,24 @@ const Suplier = () => {
       dataIndex: "date",
       render: (_, record) => (
         <div>{moment(record?.date).format("DD MMM YYYY")}</div>
+      ),
+    },
+    {
+      title: "Delivery Status",
+      dataIndex: "dStatus",
+      render: (_, record) => (
+        <div>
+          {record?.dStatus ? (
+            "ACCEPTED"
+          ) : (
+            <Button
+              style={{ color: "white", backgroundColor: "green" }}
+              onClick={() => updateStatus(record?._id)}
+            >
+              ACCEPT
+            </Button>
+          )}
+        </div>
       ),
     },
   ];

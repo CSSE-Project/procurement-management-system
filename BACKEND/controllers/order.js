@@ -72,3 +72,11 @@ exports.updateOrder = async (req, res) => {
     .then((order) => res.status(200).json({ message: "Updated Successfully" }))
     .catch((err) => res.status(500).json({ success: false, message: err }));
 };
+
+exports.updateStatus = async (req, res) => {
+  const { id } = req.params;
+  const dStatus = req.body.dStatus;
+  await Order.findByIdAndUpdate(id, { dStatus })
+    .then((order) => res.status(200).json({ message: "Updated Successfully" }))
+    .catch((err) => res.status(500).json({ success: false, message: err }));
+};

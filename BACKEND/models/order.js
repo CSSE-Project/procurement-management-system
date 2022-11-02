@@ -15,6 +15,7 @@ const Order = new Schema({
   mBudget: Number,
   status: String,
   date: Date,
+  dStatus: String,
 });
 
 module.exports = mongoose.model("order", Order);
