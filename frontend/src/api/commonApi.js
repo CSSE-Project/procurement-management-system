@@ -1,22 +1,4 @@
-import { get, post, put, patch, deleteRequest } from "./httpMethods";
-
-export const api = {
-  loginUser: (payload) => {
-    return post("/api/auth/login", payload);
-  },
-  getSalaryDetails: () => {
-    return get("/salary");
-  },
-  submitSalary: (id, payload) => {
-    return put(`/salary/status/${id}`, payload);
-  },
-  notifyUserEmail: (payload) => {
-    return post("/salary/notify-user", payload);
-  },
-  updateSalary: (id, payload) => {
-    return put(`/salary//${id}`, payload);
-  },
-  deleteSalary: (id) => {
-    return deleteRequest(`/salary/${id}`);
-  },
-};
+export async function getData() {
+  const response = await fetch("http://localhost:8070/order/");
+  return response;
+}

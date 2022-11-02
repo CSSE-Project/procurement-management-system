@@ -141,10 +141,13 @@ const AcceptOrReject = () => {
       id,
       email: "tnirmalaadasooriya@gmail.com",
     });
+    setTimeout(() => {
+      setSuccess(false);
+    }, [100]);
   };
 
   useEffect(() => {
-    (async () => axios.get("/order").then((res) => setData(res.data)))();
+    (async () => fetch("/order").then((res) => setData(res.data)))();
   }, [success]);
   return (
     <div>

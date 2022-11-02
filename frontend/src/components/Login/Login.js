@@ -188,7 +188,7 @@ const Login = () => {
         <Row>
           <Col className="left-side" xl={15} lg={15} md={24} sm={24}>
             <div className="left-side-inner-wrap">
-              <div className="title">Procument Management System</div>
+              <div className="title">Procurement Management System</div>
               <center>
                 {error && (
                   <span style={{ color: "white", background: "red" }}>

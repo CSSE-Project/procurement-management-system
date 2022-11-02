@@ -30,6 +30,7 @@ const ResetPassword = () => {
   const { resetToken } = useParams();
 
   useEffect(() => {
+    fetch();
     setTimeout(() => {
       setLoader(true);
     }, 5000);
@@ -92,7 +93,7 @@ const ResetPassword = () => {
           <br />
           <br />
           <center>
-            <h2>Procument Management System</h2>
+            <h2>Procurement Management System</h2>
             <h3 style={{ color: "red" }}>Reset Password Application</h3>
           </center>
           <Form
