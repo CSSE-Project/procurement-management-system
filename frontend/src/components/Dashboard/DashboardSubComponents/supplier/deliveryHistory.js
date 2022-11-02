@@ -1,6 +1,7 @@
 import { Button, Table } from "antd";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 
 function onChange(pagination, filters, sorter, extra) {
@@ -73,8 +74,11 @@ const DeliveryHistory = () => {
       dataIndex: "status",
     },
     {
-      title: "Delivery Date",
+      title: " Delivery Date",
       dataIndex: "date",
+      render: (_, record) => (
+        <div>{moment(record?.date).format("DD MMM YYYY")}</div>
+      ),
     },
   ];
 
