@@ -70,12 +70,6 @@ const AllocateBudget = () => {
       ),
     },
     {
-      title: "Status",
-      render: (_, record) => (
-        <div>{record.mBudget > record.sBudget ? "Valid" : "Invalid"}</div>
-      ),
-    },
-    {
       title: "Action",
       dataIndex: "status",
       render: (_, record) => (
