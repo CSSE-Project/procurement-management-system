@@ -42,6 +42,10 @@ const RulesAndRegulations = () => {
     </>
   );
 
+  useEffect(() => {
+    fetch();
+  }, []);
+
   const onSubmit = async () => {
     await axios
       .post(`/rules`, { date, rule })

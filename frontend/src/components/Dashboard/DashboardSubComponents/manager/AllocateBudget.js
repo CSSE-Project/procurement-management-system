@@ -98,7 +98,10 @@ const AllocateBudget = () => {
   };
 
   useEffect(() => {
-    (async () => axios.get("/order").then((res) => setData(res.data)))();
+    (async () =>
+      fetch("/order")
+        .then((res) => res.json())
+        .then((json) => setData(json)))();
   }, [success]);
   return (
     <div>
