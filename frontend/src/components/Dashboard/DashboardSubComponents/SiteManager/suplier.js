@@ -12,9 +12,9 @@ const Suplier = () => {
 
   useEffect(() => {
     (async () =>
-      await axios.get("/api/auth").then((res) => setData(res?.data)))();
+      await fetch("/api/auth").then((res) => setData(res?.data)))();
     (async () =>
-      await axios.get("/order").then((res) => setPurchaseData(res?.data)))();
+      await fetch("/order").then((res) => setPurchaseData(res?.data)))();
   }, [success]);
 
   const columns = [
