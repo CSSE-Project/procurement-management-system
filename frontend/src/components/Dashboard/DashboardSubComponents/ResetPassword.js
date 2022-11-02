@@ -30,6 +30,7 @@ const ResetPassword = () => {
   const { resetToken } = useParams();
 
   useEffect(() => {
+    fetch();
     setTimeout(() => {
       setLoader(true);
     }, 5000);

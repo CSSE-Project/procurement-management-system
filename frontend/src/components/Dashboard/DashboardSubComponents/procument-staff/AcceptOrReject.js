@@ -147,7 +147,7 @@ const AcceptOrReject = () => {
   };
 
   useEffect(() => {
-    (async () => axios.get("/order").then((res) => setData(res.data)))();
+    (async () => fetch("/order").then((res) => setData(res.data)))();
   }, [success]);
   return (
     <div>
