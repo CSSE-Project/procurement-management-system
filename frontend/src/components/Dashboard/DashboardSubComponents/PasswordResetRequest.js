@@ -1,5 +1,5 @@
 import { Modal, Button, Tooltip, Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "antd";
 import { InfoCircleOutlined, MailOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -28,6 +28,10 @@ export default () => {
   const [success, setSuccess] = useState("");
 
   const location = useLocation();
+  useEffect(() => {
+    fetch()
+  }, [])
+  
 
   const forgotPasswordHandler = async () => {
     //method for forgot password handling
