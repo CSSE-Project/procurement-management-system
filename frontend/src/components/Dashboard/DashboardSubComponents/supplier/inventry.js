@@ -76,7 +76,7 @@ const Inventry = () => {
       setTimeout(() => {
         setLoader(!loader);
       }, 5000);
-    (async () => axios.get("/inventry").then((res) => setData(res.data)))();
+    (async () => fetch("/inventry").then((res) => setData(res.data)))();
   }, [success]);
 
   const inventryHandler = async (placement) => {
